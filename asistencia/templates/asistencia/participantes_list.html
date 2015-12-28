@@ -1,17 +1,12 @@
-<html>
-  <head>
-    <title>Participantes Infantiles</title>
-  </head>
-  <body>
-    <div>
-      <h1><a href="">Lista de Participantes</a></h1>
-    </div>
+{% extends 'asistencia/base.html' %}
 
-    {% for participante in participantes %}
-      <div>
-        <h3>{{ participante }}</h3>
+{% block content %}
+  {% for participante in participantes %}
+    <div class="post">
+      <div class="date">
         <p>creado: {{ participante.created_date }}</p>
       </div>
-    {% endfor %}
-  </body>
-</html>
+      <h3><a href="">{{ participante }}</a></h3>
+    </div>
+  {% endfor %}
+{% endblock %}
