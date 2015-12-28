@@ -1,3 +1,4 @@
 from django.shortcuts import render
 
-# Create your views here.
+def participantes_list(request):
+    return render(request, 'asistencia/participantes_list.html', {})
