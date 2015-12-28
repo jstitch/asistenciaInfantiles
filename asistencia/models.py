@@ -1,6 +1,23 @@
 from django.db import models
 from django.utils import timezone
 
+
+class Equipo(models.Model):
+    nombre = models.CharField(max_length=20, unique=True)
+
+    def __str__(self):
+        return self.nombre
+
+
+class Ciclo(models.Model):
+    nombre = models.CharField(max_length=10, unique=True)
+    inicio = models.DateField()
+    fin    = models.DateField()
+
+    def __str__(self):
+        return self.nombre
+
+
 class Participante(models.Model):
     nombre       = models.CharField(max_length=60)
     creator      = models.ForeignKey('auth.User')
@@ -8,3 +25,27 @@ class Participante(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+class Encuentro(models.Model):
+    nombre        = models.CharField(max_length=20)
+    fecha         = models.DateField(unique=True)
+    duracion      = models.IntegerField(default=2)
+    ciclo         = models.ForeignKey(Ciclo, null=True)
+    participantes = models.ManyToManyField(Participante, through='Asistencia')
+
+    def __str__(self):
+        return self.nombre + " " + self.fecha.strftime("%Y")
+
+
+class Asistencia(models.Model):
+    participante = models.ForeignKey(Participante)
+    encuentro    = models.ForeignKey(Encuentro)
+    equipo       = models.ForeignKey(Equipo)
+    telefono     = models.CharField(max_length=15)
+
+    def __str__(self):
+        return str(self.participante) + ", " + str(self.encuentro) + ", " + str(self.equipo) + ", " + self.telefono
+
+    class Meta:
+        unique_together = (("participante", "encuentro", "equipo"), )
