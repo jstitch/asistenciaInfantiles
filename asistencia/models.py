@@ -31,7 +31,7 @@ class Encuentro(models.Model):
     nombre        = models.CharField(max_length=20)
     fecha         = models.DateField(unique=True)
     duracion      = models.IntegerField(default=2)
-    ciclo         = models.ForeignKey(Ciclo, null=True)
+    ciclo         = models.ForeignKey(Ciclo, null=True, related_name='encuentros')
     participantes = models.ManyToManyField(Participante, through='Asistencia')
 
     def __str__(self):
@@ -39,9 +39,9 @@ class Encuentro(models.Model):
 
 
 class Asistencia(models.Model):
-    participante = models.ForeignKey(Participante)
-    encuentro    = models.ForeignKey(Encuentro)
-    equipo       = models.ForeignKey(Equipo)
+    participante = models.ForeignKey(Participante, related_name='asistencias')
+    encuentro    = models.ForeignKey(Encuentro, related_name='asistencias')
+    equipo       = models.ForeignKey(Equipo, related_name='asistencias')
     telefono     = models.CharField(max_length=15)
 
     def __str__(self):
