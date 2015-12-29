@@ -37,7 +37,7 @@ h1, h2, h3, h4 {
     float: right;
 }
 
-.post-form textarea, .post-form input {
+.participante-form textarea, .participante-form input {
     width: 100%;
 }
 
@@ -48,10 +48,10 @@ h1, h2, h3, h4 {
     margin-right: 20px;
 }
 
-.post {
+.particpante {
     margin-bottom: 70px;
 }
 
-.post h1 a, .post h1 a:visited {
+.participante h1 a, .participante h1 a:visited {
     color: #000000;
 }
