@@ -1,8 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
-from .models import Participante
+from .models import Participante, Asistencia
 from .forms import ParticipanteForm
+
+def asistencia(request, cicloini, ciclofin):
+    asistence = Asistencia.objects.filter(Asistencia.encuentro.ciclo.inicio==cicloini).filter(Asistencia.encuentro.ciclo.fin==ciclofin)
+    return render(request, 'asistencia/asistencia.html', {'cicloini' : cicloini, 'ciclofin' : ciclofin})
 
 def participantes_list(request):
     participantes = Participante.objects.filter(created_date__lte=timezone.now()).order_by('created_date')
