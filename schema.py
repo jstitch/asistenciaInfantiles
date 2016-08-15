@@ -13,6 +13,9 @@ class Equipo(Base):
     id     = Column(Integer, primary_key=True, doc='Llave primaria')
     nombre = Column(String(20), index=True, unique=True)
 
+    def __init__(self, nombre):
+        self.nombre = nombre
+
     def __str__(self):
         return self.nombre
 
@@ -28,6 +31,12 @@ class Ciclo(Base):
     inicio = Column(Date)
     fin    = Column(Date)
 
+
+    def __init__(self, nombre, inicio, fin):
+        self.nombre = nombre
+        self.inicio = inicio
+        self.fin    = fin
+
     def __str__(self):
         return self.nombre
 
@@ -40,6 +49,9 @@ class Participante(Base):
 
     id           = Column(Integer, primary_key=True, doc='Llave primaria')
     nombre       = Column(String(60), index=True)
+
+    def __init__(self, nombre):
+        self.nombre = nombre
 
     def __str__(self):
         return self.nombre
@@ -60,6 +72,12 @@ class Encuentro(Base):
 
     ciclo_id      = Column(Integer, ForeignKey(Ciclo.id), nullable=False)
     Ciclo         = relationship('Ciclo', backref='encuentros')
+
+    def __init__(self, nombre, fecha, duracion, ciclo):
+        self.nombre   = nombre
+        self.fecha    = fecha
+        self.duracion = duracion
+        self.ciclo_id = ciclo.id
 
     def __str__(self):
         return self.nombre + " " + self.fecha.strftime("%Y")
@@ -85,6 +103,13 @@ class Asistencia(Base):
     Equipo          = relationship('Equipo', backref='asistencias')
 
     Index('idx_asistencia', participante_id, encuentro_id, equipo_id, unique=True)
+
+    def __init__(self, telefono, telefono2, participante, encuentro, equipo):
+        self.telefono        = telefono
+        self.telefono2       = telefono2
+        self.participante_id = participante.id
+        self.encuentro_id    = encuentro.id
+        self.equipo_id       = equipo.id
 
     def __str__(self):
         return str(self.participante) + ", " + str(self.encuentro) + ", " + str(self.equipo) + ", " + self.telefono
