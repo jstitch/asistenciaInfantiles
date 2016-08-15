@@ -8,6 +8,8 @@ from sqlalchemy import func
 Base = declarative_base()
 
 class Equipo(Base):
+    __tablename__ = "equipos"
+
     id     = Column(Integer, primary_key=True, doc='Llave primaria')
     nombre = Column(String(20), index=True, unique=True)
 
@@ -19,6 +21,8 @@ class Equipo(Base):
 
 
 class Ciclo(Base):
+    __tablename__ = "ciclos"
+
     id     = Column(Integer, primary_key=True, doc='Llave primaria')
     nombre = Column(String(10), index=True, unique=True)
     inicio = Column(Date)
@@ -32,6 +36,8 @@ class Ciclo(Base):
 
 
 class Participante(Base):
+    __tablename__ = "participantes"
+
     id           = Column(Integer, primary_key=True, doc='Llave primaria')
     nombre       = Column(String(60), index=True)
 
@@ -43,6 +49,8 @@ class Participante(Base):
 
 
 class Encuentro(Base):
+    __tablename__ = "encuentros"
+
     id            = Column(Integer, primary_key=True, doc='Llave primaria')
     nombre        = Column(String(20), index=True)
     fecha         = Column(Date, unique=True)
@@ -61,8 +69,10 @@ class Encuentro(Base):
 
 
 class Asistencia(Base):
+    __tablename__ = "asistencias"
+
     id              = Column(Integer, primary_key=True, doc='Llave primaria')
-    telefono        = Column(String(15), nullable=True
+    telefono        = Column(String(15), nullable=True)
     telefono2       = Column(String(15), nullable=True)
 
     participante_id = Column(Integer, ForeignKey(Participante.id), nullable=False)
@@ -80,4 +90,11 @@ class Asistencia(Base):
         return str(self.participante) + ", " + str(self.encuentro) + ", " + str(self.equipo) + ", " + self.telefono
 
     def __repr__(self):
-        return "<Asistencia {}: {}, {} {}, {}, {}".format(self.id, str(self.Participante), str(self.Encuentro), str(self.Encuentro.Ciclo), str(self.Equipo), "telefono{}: {}{}".format("s" if self.telefono2 else "", self.telefono, (", "+self.telefono2) if self.telefono2 else "") if self.telefono)
+        return "<Asistencia {}: {}, {} {}, {}, {}".format(self.id,
+                                                          str(self.Participante),
+                                                          str(self.Encuentro),
+                                                          str(self.Encuentro.Ciclo),
+                                                          str(self.Equipo),
+                                                          "telefono{}: {}{}".format("s" if self.telefono2 else "",
+                                                                                    self.telefono,
+                                                                                    (", "+self.telefono2) if self.telefono2 else "") if self.telefono else "")
