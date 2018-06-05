@@ -41,14 +41,26 @@ class Ciclo(Base):
         return self.nombre
 
     def __repr__(self):
-        return "<Ciclo {}: {}, {} - {}>".format(self.id, self.nombre, self.inicio.strftime('%Y-%d-%m'), self.fin.strftime('%Y-%m-%d'))
+        return "<Ciclo {}: {}, {} - {}>".format(self.id, self.nombre, self.inicio.strftime('%Y-%m-%d'), self.fin.strftime('%Y-%m-%d'))
 
 
+from asistencias import Session
+s = Session()
+ciclos = s.query(Ciclo).all()
+ciclo_anterior = [ c for c in ciclos if c.inicio == max([ci.inicio for ci in ciclos]) ][0]
 class Participante(Base):
     __tablename__ = "participantes"
 
     id           = Column(Integer, primary_key=True, doc='Llave primaria')
-    nombre       = Column(String(60), index=True)
+    nombre       = Column(String(60), index=True, unique=True)
+
+    @property
+    def asistencias_totales(self):
+        return self.asistencias
+
+    @property
+    def asistencias_ciclo(self):
+        return [ a for a in self.asistencias if a.Encuentro.Ciclo.id == ciclo_anterior.id ]
 
     def __init__(self, nombre):
         self.nombre = nombre
@@ -67,6 +79,7 @@ class Encuentro(Base):
     nombre        = Column(String(20), index=True)
     fecha         = Column(Date, unique=True)
     duracion      = Column(Integer, default=2)
+    alias         = Column(String(20))
 
     # participantes = ManyToManyField(Participante, through='Asistencia')
 
